@@ -1,0 +1,387 @@
+{
+  "site": {
+    "name": "Scalryx",
+    "tagline": "AI automation, websites and stores that grow small businesses",
+    "description": "Scalryx builds AI assistants, business automations, websites, Shopify stores and apps that help small and medium businesses, startups and agencies win more customers and save hours every week. Fixed prices from $700, deployed and supported by us, and your payment is protected until you approve the work.",
+    "url": "https://scalryx.com",
+    "email": "hello@scalryx.com",
+    "responseTime": "Replies in under 2 hours",
+    "whatsapp": "+923240682963",
+    "upwork": "https://www.upwork.com/freelancers/~013a4ddedb9d32be8a",
+    "fiverr": "https://www.fiverr.com/u_602cb878fe77"
+  },
+  "capacity": {
+    "perMonth": 10,
+    "open": 5
+  },
+  "services": [
+    {
+      "id": "ai-assistants",
+      "name": "AI assistants that answer 24/7",
+      "description": "A smart assistant trained on your business. It answers questions, books appointments and captures leads, even at 2 AM.",
+      "points": [
+        "Answers in your tone of voice",
+        "Books and qualifies leads",
+        "Hands tricky chats to you"
+      ],
+      "outcome": "Live in 2 to 4 weeks"
+    },
+    {
+      "id": "automations",
+      "name": "AI automations that save hours",
+      "description": "We connect the apps you already use and add AI, so replies, bookings, follow ups, invoices and data entry run on their own.",
+      "points": [
+        "Replies and follow ups on autopilot",
+        "Every lead lands in your CRM",
+        "Deployed and monitored by us"
+      ],
+      "outcome": "Hours back every week"
+    },
+    {
+      "id": "websites",
+      "name": "Websites that bring in customers",
+      "description": "A fast, good looking website built around one job: turning visitors into calls, bookings and sales.",
+      "points": [
+        "Looks great on every phone",
+        "Easy to find on Google",
+        "Leads sent straight to you"
+      ],
+      "outcome": "Live in 1 to 3 weeks"
+    },
+    {
+      "id": "online-stores",
+      "name": "Online stores that sell",
+      "description": "Shopify stores that load fast, look premium and make checkout effortless, so more visitors become buyers.",
+      "points": [
+        "Built on Shopify",
+        "A checkout that keeps buyers buying",
+        "Easy for your team to update"
+      ],
+      "outcome": "Live in 3 to 6 weeks"
+    },
+    {
+      "id": "apps-and-software",
+      "name": "Apps and software products",
+      "description": "Turn your idea into a mobile app or online software that customers can sign up for and pay for.",
+      "points": [
+        "iPhone and Android",
+        "Payments built in",
+        "A first version ready to launch"
+      ],
+      "outcome": "First version in 6 to 10 weeks"
+    },
+    {
+      "id": "care",
+      "name": "Deployment, hosting and care",
+      "description": "We deploy everything we build, host it on fast, secure servers, and keep it updated, backed up and running so you never have to think about it.",
+      "points": [
+        "Deployed and monitored by us",
+        "Updates and backups handled",
+        "Quick fixes when you need them"
+      ],
+      "outcome": "Care plans from $99 a month"
+    }
+  ],
+  "pricingTiers": [
+    {
+      "id": "launch",
+      "name": "Launch",
+      "audience": "New businesses & solo founders",
+      "promise": "Get online and getting leads, fast",
+      "price": {
+        "prefix": "From",
+        "amount": "$700",
+        "unit": "one time · live in 1 to 3 weeks"
+      },
+      "features": [
+        "A professional website or landing page that makes you look established",
+        "Looks great and loads fast on every phone",
+        "Contact and booking forms that send leads straight to you",
+        "Google setup so local customers can find you",
+        "2 rounds of changes included"
+      ],
+      "bonus": {
+        "label": "Google Business Profile setup",
+        "value": "$300"
+      },
+      "note": "30 days of free fixes after launch"
+    },
+    {
+      "id": "grow",
+      "name": "Grow",
+      "audience": "Small businesses & online stores",
+      "promise": "Turn your website into your best salesperson",
+      "price": {
+        "prefix": "From",
+        "amount": "$2,500",
+        "unit": "one time · live in 4 to 8 weeks"
+      },
+      "features": [
+        "A custom website, Shopify store or web app built around your customers",
+        "Online payments, bookings or memberships set up",
+        "AI automations for replies, follow ups and invoices",
+        "Connected to the tools you already use",
+        "Weekly demos, so you see everything as it’s built"
+      ],
+      "bonus": {
+        "label": "AI assistant that answers customers 24/7",
+        "value": "$1,500"
+      },
+      "note": "60 days of free fixes after launch"
+    },
+    {
+      "id": "scale",
+      "name": "Scale",
+      "audience": "Growing companies, startups & agencies",
+      "promise": "A senior dev team, without the hiring headache",
+      "price": {
+        "prefix": "From",
+        "amount": "$8,000",
+        "unit": "per project · 2 to 4 months"
+      },
+      "features": [
+        "A dedicated team of 2 to 4 senior developers with a team lead",
+        "AI automations, apps and software across your business",
+        "White label for agencies: we build under your brand",
+        "Monthly strategy call and written progress reports",
+        "Security and speed testing before launch"
+      ],
+      "bonus": {
+        "label": "Full audit of your current tech and setup",
+        "value": "$1,200"
+      },
+      "note": "90 days of priority support after launch"
+    }
+  ],
+  "supportPlans": [
+    {
+      "id": "essential",
+      "name": "Essential Care",
+      "audience": "Websites and small stores",
+      "price": {
+        "amount": "$99",
+        "unit": "per month · cancel any time"
+      },
+      "promise": "Your site stays updated, backed up and watched, without you lifting a finger.",
+      "features": [
+        "Security and software updates",
+        "Alerts the moment your site goes down",
+        "Up to 2 hours of changes a month",
+        "Daily backups we actually test",
+        "Email support"
+      ]
+    },
+    {
+      "id": "business",
+      "name": "Business Care",
+      "audience": "Sites and stores that bring in revenue",
+      "price": {
+        "amount": "$299",
+        "unit": "per month · cancel any time"
+      },
+      "promise": "A developer on call for your growing business, with faster replies when it matters.",
+      "features": [
+        "Everything in Essential Care",
+        "Up to 6 hours of changes and improvements a month",
+        "Monthly speed and hosting cost report",
+        "Security check every quarter",
+        "Direct chat with your developers"
+      ]
+    },
+    {
+      "id": "premium",
+      "name": "Premium Care",
+      "audience": "Businesses that can’t afford downtime",
+      "price": {
+        "amount": "$799",
+        "unit": "per month · cancel any time"
+      },
+      "promise": "Named developers and round the clock cover if your site or app goes down.",
+      "features": [
+        "Everything in Business Care",
+        "Up to 16 hours a month with a named lead developer",
+        "24/7 cover if your site or app goes down",
+        "Regular backup restore drills",
+        "A written report after any incident"
+      ]
+    }
+  ],
+  "guarantees": [
+    {
+      "title": "Pay only for work you approve",
+      "text": "Your payment sits safely in Upwork or Fiverr escrow and is only released when you approve each stage."
+    },
+    {
+      "title": "On time, or a month on us",
+      "text": "If we miss the launch date we agreed, and the delay is on our side, your first month of care is free."
+    },
+    {
+      "title": "Love it, or we redo it",
+      "text": "Two rounds of changes come with every stage. If the first design misses, we rework it at no cost."
+    }
+  ],
+  "includes": [
+    "You own everything we build",
+    "Fixed price in writing before you pay",
+    "Happy to work with your budget",
+    "Weekly progress demos",
+    "Payment protected by escrow"
+  ],
+  "audiences": [
+    {
+      "label": "New businesses",
+      "pain": "You are about to launch. Customers need to trust you on their first visit, and you can’t spend your whole budget on a website.",
+      "build": [
+        "A professional website that makes you look established",
+        "Google setup so local customers can find you",
+        "Contact and booking forms that send leads to your phone",
+        "Domain, business email and hosting sorted for you"
+      ],
+      "result": "Open for business online in about 2 weeks, ready for your first customers.",
+      "plan": "launch"
+    },
+    {
+      "label": "Solo founders",
+      "pain": "You have the idea and the drive, but no technical cofounder. Hiring developers is slow and risky when you can’t check their work.",
+      "build": [
+        "A clear plan for your first version, with a fixed price",
+        "A working app or software product to show customers and investors",
+        "Payments and subscriptions, so you can start charging",
+        "Plain English updates every week. No tech skills needed"
+      ],
+      "result": "A first version ready to launch in 6 to 10 weeks, and you own every part of it.",
+      "plan": "grow"
+    },
+    {
+      "label": "Small & medium businesses",
+      "pain": "Your website gets visits but not enough calls. Your team loses hours to the same questions, follow ups and paperwork.",
+      "build": [
+        "A website rebuilt to turn visitors into calls and bookings",
+        "An AI assistant that answers customers 24/7",
+        "AI automations for replies, reminders, invoices and follow ups",
+        "Connections to the tools you already use, like your CRM and calendar"
+      ],
+      "result": "More inquiries from the same traffic, and hours back every week for you and your team.",
+      "plan": "grow"
+    },
+    {
+      "label": "Online stores",
+      "pain": "Traffic is coming in, but carts get abandoned, pages load slowly and every small change needs a developer.",
+      "build": [
+        "A fast Shopify store designed to convert",
+        "A simpler checkout that keeps shoppers buying",
+        "Product pages your team can update without code",
+        "Abandoned cart emails and reviews set up for you"
+      ],
+      "result": "More completed orders from the visitors you already pay to get.",
+      "plan": "grow"
+    },
+    {
+      "label": "Agencies",
+      "pain": "Clients want websites, stores and apps. You turn work away because good developers take months to hire and cost a fortune.",
+      "build": [
+        "Senior developers who work under your brand, fully white label",
+        "Websites, Shopify stores and apps built to your standards",
+        "Your process and your tools. We join client calls only if you want us there",
+        "Flexible capacity: scale up for a big project, down when it’s quiet"
+      ],
+      "result": "Take on more client work and keep the margin, without adding to payroll.",
+      "plan": "scale"
+    }
+  ],
+  "process": [
+    {
+      "title": "Free growth call",
+      "text": "Tell us about your business and your goals. We’ll tell you honestly what will help, even if that means not hiring us.",
+      "meta": "30 minutes · Free"
+    },
+    {
+      "title": "Your plan and fixed price",
+      "text": "You get a written plan: what we’ll build, when it will be ready and exactly what it costs. No surprises later.",
+      "meta": "Within 3 days"
+    },
+    {
+      "title": "We build, deploy and launch",
+      "text": "See progress every week and approve each stage before paying for it. We deploy it into your business, then stay on to fix anything, free.",
+      "meta": "Live in 2 to 10 weeks"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "I’m not technical. Will I understand what’s going on?",
+      "a": "Yes. We explain everything in plain English, show you progress every week, and never ask you to make a technical decision without telling you what it means for your business."
+    },
+    {
+      "q": "What can AI automation actually do for my business?",
+      "a": "Anything repetitive: answering common questions, qualifying leads, booking calls, sending follow ups and reminders, creating invoices, and keeping your CRM and spreadsheets up to date. We map your week, find the tasks eating the most hours, and automate those first."
+    },
+    {
+      "q": "Is it safe to let AI talk to my customers?",
+      "a": "Yes. Your AI only answers from information you approve, hands tricky conversations to you, and is tested before it goes live. We deploy it, monitor it every day, and you can switch it off any time."
+    },
+    {
+      "q": "How much does a website cost?",
+      "a": "Most small business websites start from $700 and go live in 1 to 3 weeks. Online stores, AI assistants and apps cost more, depending on what you need. Either way, you get an exact, fixed price in writing before you commit to anything."
+    },
+    {
+      "q": "I’ve been burned by a freelancer before. How is this different?",
+      "a": "Your money is held in Upwork or Fiverr escrow and only released when you approve each stage of the work. You see real progress every week, and everything we build is in your name from day one. You never pay for promises."
+    },
+    {
+      "q": "What if I don’t like the design?",
+      "a": "You see the design before we build anything, and two rounds of changes are included at every stage. If the first direction misses, we rework it at no extra cost."
+    },
+    {
+      "q": "Do I own my website?",
+      "a": "Completely. The website, the domain, the code and every account are in your name from the start. No lock in, and no paying us just to get access to your own site."
+    },
+    {
+      "q": "Do you work with businesses outside the US?",
+      "a": "Yes. Most of our clients are in the US, and we also work with businesses in the UK, Europe, the Middle East and beyond. We overlap with US business hours every working day."
+    },
+    {
+      "q": "What happens after launch?",
+      "a": "Every project includes 30 to 90 days of free fixes, depending on your plan. After that you can add a monthly care plan from $99, or take it over yourself with the guides we hand over. Our Terms of Service have the full details."
+    },
+    {
+      "q": "How much will my project cost?",
+      "a": "Most small business websites land between $700 and $2,500. Online stores, apps and AI assistants depend on what you need. After a free 30 minute call you get an exact, fixed price in writing, before you commit to anything."
+    },
+    {
+      "q": "Can you work with my budget?",
+      "a": "Yes. Tell us your budget on the call and we will shape the plan around it, by starting smaller, splitting the work into phases, or focusing first on whatever brings in customers fastest."
+    },
+    {
+      "q": "Which plan is right for me?",
+      "a": "Launch suits new businesses and solo founders who need to get online fast. Grow suits established small businesses and online stores ready for more customers. Scale suits growing companies, software founders and agencies who need a team. Not sure? We will tell you honestly on the call."
+    },
+    {
+      "q": "Will the price change later?",
+      "a": "No. Once you approve the written plan, the price is locked for that work. If you want to add something, we send you the cost first, and nothing happens without your OK. No surprise invoices."
+    },
+    {
+      "q": "How do payments work?",
+      "a": "The project is split into stages. You fund each stage through Upwork or Fiverr, the money is held safely in escrow, and it is only released when you approve the work. Larger projects can be invoiced monthly instead."
+    },
+    {
+      "q": "What are the bonuses and the value figures?",
+      "a": "They are extras included in your price that most agencies charge for separately, shown with what they typically cost on their own. You don’t pay anything extra for them."
+    },
+    {
+      "q": "What’s included after launch?",
+      "a": "Free fixes for 30, 60 or 90 days depending on your plan, covering anything we built that doesn’t work as agreed. New features are quoted separately. The full wording is in our Terms of Service."
+    },
+    {
+      "q": "Do I need a monthly care plan?",
+      "a": "It’s optional, but most businesses with a live website or store choose one. It keeps everything updated, backed up and fixed quickly. Cancel any time with 30 days’ notice."
+    },
+    {
+      "q": "Are hosting and other tools included?",
+      "a": "No. Hosting, domains, Shopify plans and other tools are billed by their providers straight to your accounts, so you always own them. We estimate these costs in your plan and keep them as low as possible."
+    },
+    {
+      "q": "Do you sign NDAs?",
+      "a": "Yes. We are happy to sign an NDA before our first call if you need one."
+    }
+  ]
+}

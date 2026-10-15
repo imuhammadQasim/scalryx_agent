@@ -1,0 +1,9 @@
+# Caddy gets and renews the HTTPS certificate for you.
+# Point an A record (e.g. agent.scalryx.com) at the VM's public IP first.
+#   sudo cp deploy/Caddyfile /etc/caddy/Caddyfile && sudo systemctl reload caddy
+agent.scalryx.com {
+	reverse_proxy 127.0.0.1:8000 {
+		# Stream replies token by token instead of buffering them.
+		flush_interval -1
+	}
+}

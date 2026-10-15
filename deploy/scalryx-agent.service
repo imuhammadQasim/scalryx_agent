@@ -1,0 +1,23 @@
+# systemd unit for the agent on an OCI VM (Oracle Linux or Ubuntu).
+#   sudo cp deploy/scalryx-agent.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now scalryx-agent
+#   journalctl -u scalryx-agent -f
+[Unit]
+Description=Scalryx sales agent (FastAPI)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=scalryx
+WorkingDirectory=/opt/scalryx_agent
+EnvironmentFile=/opt/scalryx_agent/.env
+# One worker: rate limits and per-conversation locks live in memory.
+ExecStart=/opt/scalryx_agent/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --proxy-headers
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=full
+ReadWritePaths=/opt/scalryx_agent/data
+
+[Install]
+WantedBy=multi-user.target
