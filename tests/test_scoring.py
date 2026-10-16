@@ -29,9 +29,11 @@ def test_hot_lead_with_contact_is_offered_the_call():
     assert a.score <= 100
 
 
-def test_tiny_early_budget_is_not_pushed_to_a_call():
-    a = assess({"problem": "x", "budget": "under_700", "timeline": "exploring", "decision_maker": True})
-    assert a.next_action == "offer_brief"
+def test_small_budget_is_kept_as_a_lead():
+    # Never turned away: ask for a way to reach them, then hand to the team.
+    assert assess({"service_interest": ["automations"], "budget": "under_700"}).next_action == "small_budget"
+    assert assess({"budget": "under_700", "phone": "+1 555 0100"}).next_action == "team_followup"
+    assert assess({"budget": "under_700", "email": "a@b.co"}).next_action == "team_followup"
 
 
 def test_booked_overrides_everything():

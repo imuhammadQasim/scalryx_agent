@@ -202,3 +202,57 @@ def test_known_timezone_is_kept(client, monkeypatch):
     client.post("/v1/chat", headers=HEADERS, json={"message": "hello", "timezone": "America/Los_Angeles"})
     context = fake.requests[0]["input"][0]["content"]
     assert "(America/Los_Angeles)" in context
+
+
+def test_team_hears_about_every_reachable_lead_once(client, monkeypatch):
+    from app.config import get_settings
+    from app.integrations import mailer
+
+    sent = []
+    monkeypatch.setattr(get_settings(), "owner_email", "owner@scalryx.com")
+    monkeypatch.setattr(mailer, "send_later", lambda to, subject, text, reply_to=None: sent.append(subject))
+    fake = FakeClient(
+        [
+            ([call("update_lead", {"budget": "under_700", "service_interest": ["automations"]})], "completed"),
+            ([say("We can start small.")], "completed"),
+            ([call("update_lead", {"phone": "+1 555 0100", "name": "Ali"}, 2)], "completed"),
+            ([say("A team member will message you.", 2)], "completed"),
+            ([call("update_lead", {"email": "ali@example.com"}, 3)], "completed"),
+            ([say("Got it.", 3)], "completed"),
+        ]
+    )
+    monkeypatch.setattr(agent, "client", lambda: fake)
+
+    sid = parse_sse(client.post("/v1/chat", headers=HEADERS, json={"message": "my budget is $100"}).text)[0][1]["id"]
+    assert sent == []  # nothing to follow up on yet
+    first = json.loads(outputs(fake.requests[1])[0]["output"])
+    assert first["next_action"] == "small_budget"
+
+    client.post("/v1/chat", headers=HEADERS, json={"message": "+1 555 0100, I'm Ali", "session_id": sid})
+    assert sent == ["New lead to follow up: Ali (cold, 15/100)"]
+    assert json.loads(outputs(fake.requests[3])[-1]["output"])["next_action"] == "team_followup"
+
+    client.post("/v1/chat", headers=HEADERS, json={"message": "ali@example.com", "session_id": sid})
+    assert len(sent) == 1  # one alert per lead, not one per detail
+
+
+def test_handoff_in_same_turn_as_lead_alert_is_not_emailed_twice(client, monkeypatch):
+    from app.config import get_settings
+    from app.integrations import mailer
+
+    sent = []
+    monkeypatch.setattr(get_settings(), "owner_email", "owner@scalryx.com")
+    monkeypatch.setattr(mailer, "send_later", lambda to, subject, text, reply_to=None: sent.append(subject))
+    fake = FakeClient(
+        [
+            ([call("update_lead", {"phone": "+1 555 0100"}), call("handoff_to_human", {"reason": "wants a follow up"}, 2)], "completed"),
+            ([say("The team will message you.")], "completed"),
+            ([call("handoff_to_human", {"reason": "complaint", "urgency": "high"}, 3)], "completed"),
+            ([say("Flagged as urgent.", 2)], "completed"),
+        ]
+    )
+    monkeypatch.setattr(agent, "client", lambda: fake)
+    sid = parse_sse(client.post("/v1/chat", headers=HEADERS, json={"message": "+1 555 0100"}).text)[0][1]["id"]
+    assert len(sent) == 1 and sent[0].startswith("New lead to follow up")
+    client.post("/v1/chat", headers=HEADERS, json={"message": "this is urgent", "session_id": sid})
+    assert len(sent) == 2 and sent[1].startswith("URGENT: Chat handoff")

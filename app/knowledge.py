@@ -35,7 +35,7 @@ def as_text() -> str:
     site, cap = k["site"], k["capacity"]
     out = [
         f"Company: {site['description']}",
-        f"Website: {site['url']}. Email: {site['email']}. WhatsApp: {site['whatsapp']}. {site['responseTime']}.",
+        f"Website: {site['url']}. Email: {site['email']}. WhatsApp: {site['whatsapp']} (chat link: https://wa.me/{''.join(c for c in site['whatsapp'] if c.isdigit())}). {site['responseTime']}.",
         f"Hire through Upwork ({site['upwork']}) or Fiverr ({site['fiverr']}); payment sits in escrow until the client approves each stage.",
         f"Capacity: {cap['open']} of {cap['perMonth']} project spots are open this month.",
         "",

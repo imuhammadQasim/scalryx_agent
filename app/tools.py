@@ -123,6 +123,11 @@ def alert_team(ctx: ToolContext, subject: str, intro: str) -> None:
     mailer.send_later(s.team_email, subject, body, reply_to=ctx.lead.profile.get("email"))
 
 
+def _mark_alerted(ctx: ToolContext) -> None:
+    """Remember the team has this lead, and in which turn it was told."""
+    ctx.conversation.state = {**ctx.conversation.state, "team_alerted": True, "alerted_turn": ctx.conversation.user_turns}
+
+
 def _who(lead: Lead) -> str:
     p = lead.profile
     return p.get("name") or p.get("company") or p.get("email") or "a website visitor"
@@ -173,9 +178,21 @@ async def update_lead(ctx: ToolContext, args: LeadUpdate) -> dict[str, Any]:
     ctx.lead.profile = profile
     a = _rescore(ctx)
 
-    if a.tier == "hot" and (profile.get("email") or profile.get("phone")) and not ctx.lead.hot_alert_sent_at:
+    # The team hears about every lead that leaves a way to reach them, not
+    # only hot ones: small budgets get a personal follow-up too.
+    channels = " and ".join(label for key, label in (("phone", "WhatsApp/phone"), ("email", "email")) if profile.get(key))
+    if channels and a.tier == "hot" and not ctx.lead.hot_alert_sent_at:
         ctx.lead.hot_alert_sent_at = utcnow()
+        _mark_alerted(ctx)
         alert_team(ctx, f"Hot lead: {_who(ctx.lead)} ({a.score}/100)", "A hot lead is chatting on scalryx.com right now.")
+    elif channels and not ctx.conversation.state.get("team_alerted"):
+        _mark_alerted(ctx)
+        alert_team(
+            ctx,
+            f"New lead to follow up: {_who(ctx.lead)} ({a.tier}, {a.score}/100)",
+            f"A visitor left their {channels} in the chat on scalryx.com and expects to hear from the team, "
+            f"usually within 2 hours.",
+        )
 
     # Score and tier stay server-side; the model only needs the next move.
     return {"saved": sorted(updates), "next_action": a.next_action, "missing": a.missing}
@@ -402,7 +419,11 @@ class HandoffInput(BaseModel):
 
 async def handoff_to_human(ctx: ToolContext, args: HandoffInput) -> dict[str, Any]:
     prefix = "URGENT: " if args.urgency == "high" else ""
-    alert_team(ctx, f"{prefix}Chat handoff: {_who(ctx.lead)}", f"Scout handed this conversation to the team.\nReason: {args.reason}")
+    # A lead alert sent this same turn already carries the whole chat; don't
+    # email the team twice. Urgent handoffs always go out.
+    already = ctx.conversation.state.get("alerted_turn") == ctx.conversation.user_turns
+    if args.urgency == "high" or not already:
+        alert_team(ctx, f"{prefix}Chat handoff: {_who(ctx.lead)}", f"Scout handed this conversation to the team.\nReason: {args.reason}")
     site = knowledge.load()["site"]
     return {
         "team_notified": bool(get_settings().team_email),
@@ -438,10 +459,10 @@ def definitions() -> list[dict[str, Any]]:
                 {
                     "name": text("Their first name or full name."),
                     "email": text("Their email address, exactly as typed."),
-                    "phone": text("Phone or WhatsApp number, with country code if given."),
+                    "phone": text("WhatsApp or phone number, exactly as given, with the country code if they gave one."),
                     "company": text("Business or company name."),
                     "website": text("Their current website, if any."),
-                    "industry": text("What the business does, e.g. dental clinic, Shopify skincare store, marketing agency."),
+                    "industry": text("What kind of business they run, in their words. Only what they told you, never a guess, and not the thing they want built."),
                     "location": text("City and/or country of the business."),
                     "role": text("Their role, e.g. owner, marketing manager."),
                     "service_interest": {

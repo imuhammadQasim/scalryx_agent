@@ -75,12 +75,14 @@ def assess(profile: dict[str, Any], booked: bool = False) -> Assessment:
     tier = "hot" if score >= HOT else "warm" if score >= WARM else "cold"
     missing = [key for key in DISCOVERY_ORDER if not _known(profile, key)]
     has_contact = bool(profile.get("name") and profile.get("email"))
+    reachable = bool(profile.get("email") or profile.get("phone"))
 
     if booked:
         action = "booked"
-    elif profile.get("budget") == "under_700" and profile.get("timeline") in {"exploring", "3_plus_months"}:
-        # Too early and too small for a call: stay helpful, offer the brief.
-        action = "offer_brief" if not profile.get("email") else "keep_helping"
+    elif profile.get("budget") == "under_700":
+        # Below the usual starting price is still a lead: get a way to reach
+        # them, and let a person work out what is possible for that budget.
+        action = "team_followup" if reachable else "small_budget"
     elif tier == "hot":
         action = "offer_call" if has_contact else "ask_contact_for_call"
     elif tier == "warm":

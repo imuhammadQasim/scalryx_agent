@@ -8,6 +8,7 @@ os.environ["AGENT_ENV_FILE"] = str(_tmp / "no.env")  # never read the real .env
 os.environ["DATABASE_URL"] = f"sqlite+aiosqlite:///{(_tmp / 'test.db').as_posix()}"
 os.environ["AGENT_API_KEY"] = "test-key"
 os.environ["ADMIN_TOKEN"] = "admin-token"
+os.environ["RATE_LIMIT_PER_MINUTE"] = "1000"  # the suite sends many chats a minute
 os.environ["OPENAI_API_KEY"] = "sk-test"
 os.environ["OPENAI_MODEL"] = "gpt-5.4-mini"
 os.environ["OPENAI_REASONING_EFFORT"] = "low"
