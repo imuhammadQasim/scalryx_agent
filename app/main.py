@@ -19,7 +19,7 @@ from sqlalchemy import select
 
 from . import agent, enquiries, knowledge
 from .config import get_settings
-from .db import Conversation, Lead, Message, SessionLocal, init_db
+from .db import Conversation, ChatLead, Message, SessionLocal, init_db
 from .history import transcript
 from .prompt import system_prompt
 from .tools import lead_summary
@@ -167,9 +167,9 @@ async def history(session_id: str) -> dict[str, Any]:
 @app.get("/v1/admin/leads", dependencies=[Depends(require_admin)])
 async def leads(tier: str | None = None, limit: int = 50) -> list[dict[str, Any]]:
     async with SessionLocal() as db:
-        query = select(Lead).order_by(Lead.updated_at.desc()).limit(min(limit, 500))
+        query = select(ChatLead).order_by(ChatLead.updated_at.desc()).limit(min(limit, 500))
         if tier:
-            query = query.where(Lead.tier == tier)
+            query = query.where(ChatLead.tier == tier)
         return [
             {
                 "conversation_id": lead.conversation_id,
@@ -191,7 +191,7 @@ async def conversation(conversation_id: str) -> dict[str, Any]:
         if conv is None:
             raise HTTPException(404, "No such conversation")
         rows = await db.scalars(select(Message).where(Message.conversation_id == conv.id).order_by(Message.id))
-        lead = await db.scalar(select(Lead).where(Lead.conversation_id == conv.id))
+        lead = await db.scalar(select(ChatLead).where(ChatLead.conversation_id == conv.id))
         return {
             "lead": lead_summary(conv, lead) if lead else None,
             "transcript": transcript([m.item for m in rows], limit=500),

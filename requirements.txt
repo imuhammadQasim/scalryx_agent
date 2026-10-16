@@ -9,3 +9,5 @@ aiosqlite>=0.22
 httpx>=0.28
 aiosmtplib>=5.1
 tzdata>=2026.5
+alembic>=1.16
+argon2-cffi>=25.1

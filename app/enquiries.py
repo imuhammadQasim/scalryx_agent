@@ -9,7 +9,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 from . import knowledge
 from .config import get_settings
-from .db import Conversation, Lead, Message, SessionLocal
+from .db import Conversation, ChatLead, Message, SessionLocal
 from .integrations import mailer
 from .scoring import assess
 from .tools import lead_summary, zone
@@ -64,7 +64,7 @@ async def save(body: EnquiryRequest, ip: str) -> dict[str, Any]:
             state={},
             user_turns=0,
         )
-        lead = Lead(conversation_id=conv.id, email=profile["email"], profile=profile, score=a.score, tier=a.tier, booked=False)
+        lead = ChatLead(conversation_id=conv.id, email=profile["email"], profile=profile, score=a.score, tier=a.tier, booked=False)
         db.add(conv)
         await db.flush()
         db.add(lead)

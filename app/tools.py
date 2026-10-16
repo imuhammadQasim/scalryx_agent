@@ -16,7 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from . import knowledge
 from .config import get_settings
-from .db import Booking, Conversation, Lead, utcnow
+from .db import Booking, Conversation, ChatLead, utcnow
 from .history import transcript
 from .integrations import calcom, mailer
 from .scoring import BUDGETS, TIMELINES, assess, brief_card
@@ -28,7 +28,7 @@ from .scoring import BUDGETS, TIMELINES, assess, brief_card
 class ToolContext:
     db: AsyncSession
     conversation: Conversation
-    lead: Lead
+    lead: ChatLead
     items: list[dict[str, Any]]
     events: list[tuple[str, dict[str, Any]]] = field(default_factory=list)
 
@@ -86,7 +86,7 @@ def _rescore(ctx: ToolContext) -> Any:
     return a
 
 
-def lead_summary(conversation: Conversation, lead: Lead) -> str:
+def lead_summary(conversation: Conversation, lead: ChatLead) -> str:
     p = lead.profile
     budget = BUDGETS.get(p.get("budget") or "", ("unknown",))[0]
     timeline = TIMELINES.get(p.get("timeline") or "", ("unknown",))[0]
@@ -128,7 +128,7 @@ def _mark_alerted(ctx: ToolContext) -> None:
     ctx.conversation.state = {**ctx.conversation.state, "team_alerted": True, "alerted_turn": ctx.conversation.user_turns}
 
 
-def _who(lead: Lead) -> str:
+def _who(lead: ChatLead) -> str:
     p = lead.profile
     return p.get("name") or p.get("company") or p.get("email") or "a website visitor"
 

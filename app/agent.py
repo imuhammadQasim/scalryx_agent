@@ -22,7 +22,7 @@ from sqlalchemy import select
 
 from . import knowledge, tools
 from .config import get_settings
-from .db import Booking, Conversation, Lead, Message, SessionLocal, get_lead, utcnow
+from .db import Booking, Conversation, ChatLead, Message, SessionLocal, get_lead, utcnow
 from .history import display_messages
 from .prompt import system_prompt
 from .scoring import brief_card
@@ -323,7 +323,7 @@ async def load_history(conversation_id: str) -> dict[str, Any] | None:
         if conv is None:
             return None
         rows = await db.scalars(select(Message).where(Message.conversation_id == conv.id).order_by(Message.id))
-        lead = await db.scalar(select(Lead).where(Lead.conversation_id == conv.id))
+        lead = await db.scalar(select(ChatLead).where(ChatLead.conversation_id == conv.id))
         booking = await db.scalar(
             select(Booking).where(Booking.conversation_id == conv.id).order_by(Booking.id.desc())
         )

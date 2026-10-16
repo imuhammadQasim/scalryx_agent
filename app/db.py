@@ -8,7 +8,7 @@ from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, String, sel
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-from .config import get_settings
+from .config import BASE_DIR, get_settings
 
 
 def utcnow() -> datetime:
@@ -49,8 +49,8 @@ class Message(Base):
     created_at: Mapped[datetime] = mapped_column(default=utcnow)
 
 
-class Lead(Base):
-    __tablename__ = "leads"
+class ChatLead(Base):
+    __tablename__ = "chat_leads"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     conversation_id: Mapped[str] = mapped_column(ForeignKey("conversations.id"), unique=True)
@@ -88,13 +88,24 @@ async def init_db() -> None:
     if url.get_backend_name() == "sqlite" and url.database:
         Path(url.database).parent.mkdir(parents=True, exist_ok=True)
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+        await conn.run_sync(_migrate)
 
 
-async def get_lead(db: AsyncSession, conversation_id: str) -> Lead:
-    lead = await db.scalar(select(Lead).where(Lead.conversation_id == conversation_id))
+def _migrate(connection) -> None:
+    """Bring the schema to the latest Alembic revision (see migrations/)."""
+    from alembic import command
+    from alembic.config import Config
+
+    cfg = Config(str(BASE_DIR / "alembic.ini"))
+    cfg.set_main_option("script_location", str(BASE_DIR / "migrations"))
+    cfg.attributes["connection"] = connection
+    command.upgrade(cfg, "head")
+
+
+async def get_lead(db: AsyncSession, conversation_id: str) -> ChatLead:
+    lead = await db.scalar(select(ChatLead).where(ChatLead.conversation_id == conversation_id))
     if lead is None:
-        lead = Lead(conversation_id=conversation_id, profile={})
+        lead = ChatLead(conversation_id=conversation_id, profile={})
         db.add(lead)
         await db.flush()
     return lead
