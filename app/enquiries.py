@@ -8,6 +8,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 from . import knowledge
+from .crm import service as crm
 from .config import get_settings
 from .db import Conversation, ChatLead, Message, SessionLocal
 from .integrations import mailer
@@ -69,6 +70,9 @@ async def save(body: EnquiryRequest, ip: str) -> dict[str, Any]:
         await db.flush()
         db.add(lead)
         db.add(Message(conversation_id=conv.id, kind="user", item={"role": "user", "content": body.message}))
+        await crm.capture_visitor(
+            db, "website_form", conv.id, {**profile, "notes": f"{body.project_label or body.project_type}"}, a.tier == "hot"
+        )
         await db.commit()
 
     s = get_settings()

@@ -32,6 +32,23 @@ class Settings(BaseSettings):
     # Bearer token for /v1/admin/* endpoints. Empty disables them.
     admin_token: str = ""
 
+    # --- Lead dashboard (/api/*) ---
+    # The one admin account, written to the database by `python -m app.crm.seed`.
+    admin_email: str = ""
+    admin_password: str = ""
+    # Shared secret for POST /api/leads/ingest (X-Ingest-Key). Empty disables it.
+    ingest_key: str = ""
+    ingest_rate_per_minute: int = 30
+    # Origins allowed to call /api with the session cookie, comma separated.
+    dashboard_origins: str = "http://localhost:5173"
+    # Send the session cookie over HTTPS only. Switch off for plain-http local dev.
+    cookie_secure: bool = True
+    session_days: int = 7
+    # Behind a reverse proxy (Caddy), take the client IP from X-Forwarded-For.
+    trust_proxy: bool = False
+    login_max_failures: int = 5
+    login_lockout_minutes: int = 15
+
     database_url: str = f"sqlite+aiosqlite:///{(BASE_DIR / 'data' / 'agent.db').as_posix()}"
     knowledge_path: Path = BASE_DIR / "knowledge" / "scalryx.json"
 
@@ -65,6 +82,10 @@ class Settings(BaseSettings):
     rate_limit_per_minute: int = 12
     max_user_turns: int = 40
     max_message_chars: int = 1000
+
+    @property
+    def dashboard_origin_list(self) -> list[str]:
+        return [o.strip().rstrip("/") for o in self.dashboard_origins.split(",") if o.strip()]
 
     @property
     def calendar_enabled(self) -> bool:

@@ -15,6 +15,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field, ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from . import knowledge
+from .crm import service as crm
 from .config import get_settings
 from .db import Booking, Conversation, ChatLead, utcnow
 from .history import transcript
@@ -177,6 +178,9 @@ async def update_lead(ctx: ToolContext, args: LeadUpdate) -> dict[str, Any]:
     profile.update(updates)
     ctx.lead.profile = profile
     a = _rescore(ctx)
+
+    if profile.get("email") or profile.get("phone"):
+        await crm.capture_visitor(ctx.db, "chatbot", ctx.conversation.id, profile, a.tier == "hot")
 
     # The team hears about every lead that leaves a way to reach them, not
     # only hot ones: small budgets get a personal follow-up too.

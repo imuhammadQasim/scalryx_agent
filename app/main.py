@@ -13,12 +13,16 @@ from contextlib import asynccontextmanager
 from typing import Any
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
-from fastapi.responses import StreamingResponse
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 
 from . import agent, enquiries, knowledge
 from .config import get_settings
+from .crm.router import router as crm_router
 from .db import Conversation, ChatLead, Message, SessionLocal, init_db
 from .history import transcript
 from .prompt import system_prompt
@@ -45,6 +49,30 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="Scalryx agent", lifespan=lifespan, docs_url=None, redoc_url=None)
+
+# The dashboard may call /api from its own origin only, with its session cookie.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=get_settings().dashboard_origin_list,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PATCH", "DELETE"],
+    allow_headers=["Content-Type"],
+)
+app.include_router(crm_router)
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_error(request: Request, exc: RequestValidationError) -> JSONResponse:
+    """Readable messages for the dashboard; the /v1 routes keep FastAPI's default."""
+    if not request.url.path.startswith("/api/"):
+        return JSONResponse({"detail": jsonable_encoder(exc.errors())}, status_code=422)
+    errors: dict[str, str] = {}
+    for err in exc.errors():
+        field = ".".join(str(p) for p in err["loc"] if p not in ("body", "query"))
+        message = str(err["msg"]).removeprefix("Value error, ")
+        errors.setdefault(field or "request", message)
+    first = next(iter(errors.items()))
+    return JSONResponse({"detail": f"{first[0]}: {first[1]}", "errors": errors}, status_code=422)
 
 
 # ------------------------------------------------------------------ guards --
