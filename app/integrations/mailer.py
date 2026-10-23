@@ -58,8 +58,8 @@ async def send(to: str, subject: str, text: str, reply_to: str | None = None, bc
         return False
 
 
-def send_later(to: str, subject: str, text: str, reply_to: str | None = None) -> None:
-    """Send without making the visitor wait. Used for alerts to the team."""
+def send_later(to: str | list[str], subject: str, text: str, reply_to: str | None = None) -> None:
+    """Send without making the visitor wait. `to` may be several addresses."""
     task = asyncio.create_task(send(to, subject, text, reply_to=reply_to))
     _pending.add(task)
     task.add_done_callback(_pending.discard)

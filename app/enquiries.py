@@ -76,10 +76,10 @@ async def save(body: EnquiryRequest, ip: str) -> dict[str, Any]:
         await db.commit()
 
     s = get_settings()
-    if s.team_email:
+    if s.team_emails:
         who = f"{body.name} ({body.company})" if body.company else body.name
         mailer.send_later(
-            s.team_email,
+            s.team_emails,
             f"New enquiry: {who}, {a.tier} lead ({a.score}/100)",
             f"Someone sent the contact form on scalryx.com. Reply to this email to answer them.\n\n"
             f"{lead_summary(conv, lead)}\n\nTheir message:\n\n{body.message}\n",

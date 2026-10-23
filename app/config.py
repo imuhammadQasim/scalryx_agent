@@ -70,6 +70,8 @@ class Settings(BaseSettings):
     smtp_password: str = ""
     smtp_from: str = ""
     smtp_starttls: bool = True
+    # Where team alerts go. Comma separated for several inboxes, e.g.
+    # "ahad@scalryx.com,muhammad.qasim.dev07@gmail.com".
     owner_email: str = ""
     # Times in the team's alerts are shown in this zone.
     owner_timezone: str = "America/New_York"
@@ -98,9 +100,15 @@ class Settings(BaseSettings):
         return self.smtp_from or (f"Scalryx <{self.smtp_user}>" if self.smtp_user else "")
 
     @property
+    def team_emails(self) -> list[str]:
+        """Every inbox that gets alerts: OWNER_EMAIL, or else the SMTP account itself."""
+        listed = [e.strip() for e in (self.owner_email or self.smtp_user).split(",")]
+        return [e for e in listed if e]
+
+    @property
     def team_email(self) -> str:
-        """Where alerts go: OWNER_EMAIL, or else the SMTP account itself."""
-        return self.owner_email or self.smtp_user
+        """The first alert inbox, used as the Reply-To on mail to visitors."""
+        return next(iter(self.team_emails), "")
 
     @property
     def email_enabled(self) -> bool:

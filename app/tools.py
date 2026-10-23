@@ -118,10 +118,10 @@ def lead_summary(conversation: Conversation, lead: ChatLead) -> str:
 
 def alert_team(ctx: ToolContext, subject: str, intro: str) -> None:
     s = get_settings()
-    if not s.team_email:
+    if not s.team_emails:
         return
     body = f"{intro}\n\n{lead_summary(ctx.conversation, ctx.lead)}\n\nConversation:\n\n{transcript(ctx.items)}\n"
-    mailer.send_later(s.team_email, subject, body, reply_to=ctx.lead.profile.get("email"))
+    mailer.send_later(s.team_emails, subject, body, reply_to=ctx.lead.profile.get("email"))
 
 
 def _mark_alerted(ctx: ToolContext) -> None:
@@ -403,7 +403,7 @@ async def send_project_brief(ctx: ToolContext, args: BriefInput) -> dict[str, An
         f"The Scalryx team\n{site['url']}\n"
     )
     sent = await mailer.send(
-        p["email"], "Your Scalryx project brief", text, reply_to=s.team_email or site["email"], bcc=s.team_email or None
+        p["email"], "Your Scalryx project brief", text, reply_to=s.team_email or site["email"], bcc=", ".join(s.team_emails) or None
     )
     if not sent:
         return {"sent": False, "message": f"Email could not be sent right now. Tell them the team will follow up at {p['email']}."}
