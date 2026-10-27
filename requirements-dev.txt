@@ -1,2 +1,7 @@
+# Install runtime dependencies first.
 -r requirements.txt
-pytest>=9.1
+
+# Development and test tooling
+pytest
+pytest-asyncio
+ruff

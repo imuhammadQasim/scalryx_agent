@@ -1,13 +1,24 @@
+# Runtime dependencies for a modern Python environment.
+# Recommended: Python 3.12 or 3.13 (Python >= 3.11 required by current pydantic-settings).
+# OpenAI is intentionally constrained to SDK v2 for application compatibility.
 openai>=2.0.0,<3.0.0
-fastapi>=0.143
-uvicorn[standard]>=0.54
-pydantic>=2.14
-pydantic-settings>=2.16
-email-validator>=2.3
-sqlalchemy[asyncio]>=2.1
-aiosqlite>=0.22
-httpx>=0.28
-aiosmtplib>=5.1
-tzdata>=2026.5
-alembic>=1.16
-argon2-cffi>=25.1
+
+# Web API
+fastapi
+uvicorn[standard]
+
+# Validation and configuration
+pydantic>=2.0.0,<3.0.0
+pydantic-settings>=2.0.0,<3.0.0
+email-validator
+
+# Database and migrations
+sqlalchemy[asyncio]>=2.0.0,<3.0.0
+aiosqlite
+alembic
+
+# HTTP, email, timezone, password hashing
+httpx
+aiosmtplib
+tzdata
+argon2-cffi
